@@ -6,43 +6,83 @@
     <title>{{ title }}</title>
 </head>
 <style>
-body {
-    background-color: #f0f2f5;
-    color: #1c1e21;
-    margin: 0;
-    padding: 2rem;
-}
-.container { max-width: 1280px; margin: 0 auto; }
-.header { margin-bottom: 2rem; text-align: center; }
-.header h1 { font-size: 2.5rem; color: #333; }
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
-}
-.movie-card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-.movie-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-}
-.movie-card__poster img {
-    width: 100%;
-    height: 375px;
-    object-fit: cover;
-    display: block;
-}
-.movie-card__content { padding: 1rem; }
-.movie-card__title { font-size: 1.2rem; font-weight: 600; margin: 0 0 0.5rem; }
-.movie-card__info { font-size: 0.9rem; color: #606770; }
-.no-movies { text-align: center; font-size: 1.2rem; color: #606770; }
-</style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .actor-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .actor-photo img {
+            width: 300px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .actor-info h1 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .actor-birthdate {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .actor-biography {
+            line-height: 1.5;
+            color: #444;
+        }
+        .movies-section h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .movie-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .movie-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .movie-card-content {
+            padding: 10px;
+        }
+        .movie-card-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .movie-card-info {
+            font-size: 14px;
+            color: #666;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 <body>
     <div class="container">
         <header class="header">
@@ -81,10 +121,10 @@ body {
                         </tr>
 
                         <tr>
-                            <td>в ролях</td>
+                            <td>В ролях</td>
                             <td>
-                                {% for actor in movie.actors.all %}
-                                    {{ actor }}{% if not forloop.last %}, {% endif %}
+                                {% for actor in movie.Actor.all %}
+                                    <a href="{% url 'actor_detail' pk=actor.pk %}">{{ actor }}</a>{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
                         </tr>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ actor.first_name }} {{ actor.last_name }} - КиноКаталог
+{% endblock %}
+
+{% block content %}
+
+<div class="actor-info">
+    <div class="actor-info__photo">
+        {% if actor.photo %}
+            <img src="{{ actor.photo.url }}" alt="Фото {{ actor }}">
+        {% else %}
+            <img src="#" alt="Фото отсутствует">
+        {% endif %}
+    </div>
+    <div class="actor-info__detail">
+        <h1>{{ actor }}</h1>
+        {% if actor.birth_date %}
+            <p><strong>Дата рождения:</strong>{{ actor.birth_date|date:"d F Y" }}</p>
+        {% endif %}
+    </div>
+</div>
+
+<header class="header">
+    <h2>Фильмы с участием актера</h2>
+</header>
+
+{% include 'movies/includes/movie_grid.html' %}
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from .models import Movie, Genre, Director
+from .models import Movie, Genre, Director, Actor
 
 def index(request):
     movies = Movie.objects.filter(is_published=True)
@@ -43,3 +43,17 @@ def movies_by_director(request, pk):
         'title': f'Фильмы режиссёра: {director}'
     }
     return render(request, 'movies/movie_list.html', context=context)
+
+def actor_detail(request, pk):
+
+    actor = get_object_or_404(Actor, pk=pk)
+
+    movies = actor.movies.filter(is_published=True)
+
+    context = {
+        'actor': actor,
+        'movies_list': movies,
+        'title': f'Информация об актере: {actor}'
+    }
+
+    return render(request, 'movies/actor_detail.html', context=context)
