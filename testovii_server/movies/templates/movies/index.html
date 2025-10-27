@@ -10,4 +10,8 @@
     </header>
 
     {% include 'movies/includes/movie_grid.html' %}
+
+    {% if page_obj.has_other_pages %}
+        {% include 'movies/includes/pagination.html' %}
+    {% endif %}
 {% endblock %}

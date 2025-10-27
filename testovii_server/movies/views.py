@@ -1,14 +1,27 @@
 from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
 from .models import Movie, Genre, Director, Actor
 
 def index(request):
-    movies = Movie.objects.filter(is_published=True)
+    all_movies = Movie.objects.filter(is_published=True).order_by('-release_date')
+
+    paginator = Paginator(all_movies, 4)
+
+    page_number = request.GET.get('page')
+
+    try:
+        page_obj = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
 
     context = {
-        'movies_list': movies,
+        'page_obj': page_obj,
         'title': "КиноКаталог - Главная"
     }
+
     return render(request, 'movies/index.html', context=context)
 
 def index1(request):
