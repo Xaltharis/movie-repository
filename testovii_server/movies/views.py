@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Movie, Genre, Director, Actor
+from .forms import ReviewForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     all_movies = Movie.objects.filter(is_published=True).order_by('-release_date')
@@ -29,9 +31,26 @@ def index1(request):
 
 def movie_detail(request, slug):
     movie = get_object_or_404(Movie, slug=slug)
+    reviews = movie.reviews.all()
+
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                review = form.save(commit=False)
+                review.movie = movie
+                review.author = request.user
+                review.save()
+                return redirect('movie_detail', slug=movie.slug)
+        else:
+            return redirect('login')
+    else:
+        form = ReviewForm()
 
     context = {
         'movie': movie,
+        'reviews': reviews,
+        'form': form,
         'title': f'Фильм {movie.title}'
     }
 
